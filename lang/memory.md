@@ -3,6 +3,16 @@
 Zinc uses keyword-based ownership operators instead of sigil syntax (`&`, `*`).
 Ownership/borrow/ref status is encoded directly in the type — there are no separate lifetime annotations.
 
+## Default: assignment is a copy
+A plain `=` copies the value. No ownership keyword is needed for everyday code — you only reach for `borrow`, `ref`, or `move` when you specifically want the performance or semantic benefits of not copying.
+
+```zn
+let a = someValue   // copy — both a and someValue are valid, independent
+let b = a           // another copy
+```
+
+This means Zinc can be written without ever touching the ownership system for the vast majority of code. The memory model is opt-in for performance, not mandatory for correctness.
+
 ## Ownership operators
 Used as prefix operators on expressions, similar to `await` or `new` in TypeScript.
 

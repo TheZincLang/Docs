@@ -4,28 +4,48 @@
 |---------------------|----------------------------------------------------------------------------|
 | Status              | earliest development                                                       |
 | Source extension    | `.zn`                                                                      |
-| Paradigm            | compiled, statically typed, systems but full capabilities in all pardigms  |
+| Paradigm            | compiled, statically typed, systems but full capabilities in all paradigms |
 | Compiler written in | TypeScript first since the similar syntax, then self hosted                |
-| Target              | first LLVM to x84/64, then custom backend way later with full target range |
-| Memory model        | rustic guaranteed memory safety and automatic freeing                      |
+| Target              | first LLVM to x86/64, then custom backend way later with full target range |
+| Memory model        | guaranteed memory safety and automatic freeing, no GC                      |
 
 ## Goals
 - **Safety**: prevent common bugs like null dereference, buffer overflow, use-after-free, data races, etc. through a combination of static checks and runtime checks.
 - **Performance**: generate efficient machine code with minimal overhead, comparable to C/C++.
-- **Expressiveness**: support a wide range of programming paradigms (procedural, object-oriented, functional, etc.) and provide powerful and TypeScript like high level abstractions without sacrificing performance when using low level code.
+- **Expressiveness**: support a wide range of programming paradigms (procedural, object-oriented, functional, etc.) and provide powerful TypeScript-like high-level abstractions without sacrificing performance when using low-level code.
 - **Developer experience**: provide clear and helpful error messages, fast compilation times, and a smooth development workflow.
 
+## Design philosophy
+Zinc does not force a trade-off between high-level and low-level code. The rule is: write in whatever style suits the problem, then drop to lower-level primitives only where it actually matters.
+
+- In the hot path: use `move`/`borrow`/`ref`, manual memory control, raw types
+- Everywhere else: use TypeScript-like abstractions, first-class networking primitives, union types, closures — without importing anything special or paying a runtime penalty
+
+The memory model reflects this: a plain `=` is a copy and the ownership system is entirely opt-in. Most programs never need to think about it.
+
+## Multi-paradigm capabilities
+| Capability | Notes |
+|---|---|
+| Procedural | core |
+| Object-oriented | [FILL] |
+| Functional | lambdas, closures, first-class functions |
+| Networking | import-less, built-in primitives (TypeScript/Deno-style API) |
+| TypeScript-like abstractions | union types, type narrowing, string templates, etc. |
+
 ## Non-goals
-- **Garbage collection**: Zinc will not include a garbage collector; instead, it will use a combination of ownership and borrowing rules (similar to Rust) for managing memory safely without GC overhead.
-- **Scripüting language features**: While Zinc will support high-level abstractions and runtime dynamic features through function pointer replacement and a powerful lambda system, it will still be an AOT compiled language with a focus on performance and safety, rather than an interpreted and almost completely dynamic scripting language.
+- **Garbage collection**: Zinc will not include a garbage collector; instead, it uses ownership and borrowing for memory safety without GC overhead.
+- **Scripting language features**: Zinc supports high-level abstractions and runtime dynamic features through lambdas and closures, but it is an AOT compiled language focused on performance and safety — not an interpreted or fully dynamic scripting language.
 
 ## Implementation status
 Sync with `../Zinc/CLAUDE.md` § "Current implementation status".
 
-**Done:** 
-- basically nothing
-  (joke, but also the actual state of the project, please correct when told to update the Docs based on the state of the compiler)
+**Done:**
+- Lexer (complete or near-complete)
+- Parser (working; `for` loop is the last missing construct for Turing completeness)
 
-**Pending:** 
--basically everything
-(same as above, but also the actual state of the project, please correct when told to update the Docs based on the state of the compiler)
+**Pending:**
+- `for` loop parsing
+- Function declaration parsing (`fn`/`func`/`function`)
+- Type checker
+- Lifetime inference
+- Code generation (LLVM backend)
