@@ -10,6 +10,7 @@ Separate repo. Companion compiler repo: `../Zinc` (CLAUDE.md: `../Zinc/CLAUDE.md
 | Operators, precedence table, semantics            | `lang/operators.md`    |
 | Statement grammar (all statement forms)           | `lang/statements.md`   |
 | Function declaration and call syntax              | `lang/functions.md`    |
+| Lambdas, closures, capture semantics              | `lang/lambdas.md`      |
 | Import/export, module resolution                  | `lang/modules.md`      |
 | Enum syntax and AST representation                | `lang/enums.md`        |
 | Compiler error codes and messages                 | `compiler/errors.md`   |
