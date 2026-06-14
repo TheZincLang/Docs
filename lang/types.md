@@ -7,20 +7,21 @@ Source of truth: `../Zinc/src/global/types/globalTypes.ts` — `TypeKind` enum
 | [FILL]   | [FILL]      | [FILL] |
 
 ## Primitive types
-| Zinc type         | Size   | Signed | Notes |
-|-------------------|--------|--------|-------|
-| [FILL: e.g. i8]   | 8-bit  | yes    |       |
-| [FILL: e.g. i32]  | 32-bit | yes    |       |
-| [FILL: e.g. u8]   | 8-bit  | no     |       |
-| [FILL: e.g. bool] | —      | —      |       |
-| [FILL: e.g. f32]  | 32-bit | —      | float |
-| [FILL: e.g. str]  | —      | —      |       |
+| Zinc type    | Size   | Signed | Notes |
+|--------------|--------|--------|-------|
+| i8 / int8    | 8-bit  | yes    |       |
+| i32 / int32  | 32-bit | yes    |       |
+| u8 / uint8   | 8-bit  | no     |       |
+| bool         | 8-bit  | —      |       |
+| f32 / float  | 32-bit | —      | float |
+| f64 / double | 64-bit | -      | float |
+
 
 ## Composite types
 | Kind            | Syntax              | AST node                     |
 |-----------------|---------------------|------------------------------|
-| Array           | [FILL]              | [FILL]                       |
-| Enum            | `enum Name { ... }` | `EnumDecl`                   |
+| Array           | `<type>[]`          | array postfix node           |
+| Enum            | `enum Name { ... }` | `EnumNode`                   |
 | Struct / record | [FILL]              | [FILL: not yet implemented?] |
 
 ## Type annotations

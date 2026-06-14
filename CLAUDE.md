@@ -18,6 +18,7 @@ Separate repo. Companion compiler repo: `../Zinc` (CLAUDE.md: `../Zinc/CLAUDE.md
 
 ## Conventions
 - `[FILL]` = unfilled placeholder; fill with actual value, then remove the marker
+- `[UNDEC]` = undecided / open design question; discuss and decide, then replace with actual value and remove the marker
 - Grammar: `<rule>` non-terminal · `[x]` optional · `{x}` zero-or-more · `|` alternation
 - Tables preferred over prose; no decorative content
 - Keep implementation-status fields in sync with `../Zinc/CLAUDE.md`

@@ -22,10 +22,10 @@ Parser chain: `parseAssignment → parseTernary → parseLogicalOr → parseLogi
 [FILL: verify all parse fn names against parser.ts]
 
 ## Operator semantics
-| Operator  | Notes                                                                       |
-|-----------|-----------------------------------------------------------------------------|
-| `/`       | [FILL: integer division truncates toward zero? undefined behavior on zero?] |
-| `%`       | [FILL: sign of result matches dividend?]                                    |
-| `<<` `>>` | [FILL: arithmetic or logical right shift?]                                  |
-| `++` `--` | both prefix and postfix forms supported                                     |
+| Operator  | Notes                                   |
+|-----------|-----------------------------------------|
+| `/`       | all behavior is identical to C          |
+| `%`       | all behavior is identical to C          |
+| `<<` `>>` | all behavior is identical to C          |
+| `++` `--` | both prefix and postfix forms supported |
 [FILL: add any non-obvious behaviors]

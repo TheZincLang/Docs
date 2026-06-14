@@ -3,7 +3,7 @@ Status: **not yet implemented** in parser (`fn` token throws `"not implemented y
 
 ## Planned declaration syntax
 ```
-[FILL: fn <ident> "(" [<param> {"," <param>}] ")" ["->" <type>] <block>]
+[FILL: ("fn" | "func" | "function") <ident> "(" [<param> {"," <param>}] ")" [":" <type>] <block>]
 [FILL: <param> ::= <ident> ":" <type>]
 ```
 
@@ -15,14 +15,14 @@ Status: **not yet implemented** in parser (`fn` token throws `"not implemented y
 Parsed in `parsePostfix`. AST node: [FILL: check ParserTypes.ts for call node name].
 
 ## Planned features
-| Feature | Status | Notes |
-|---|---|---|
-| Named parameters | [FILL] | |
-| Default values | [FILL] | |
-| Variadic (`...`) | [FILL] | |
-| First-class / closures | [FILL] | |
-| Overloading | [FILL] | |
-| Generics | [FILL] | |
+| Feature                | Status | Notes |
+|------------------------|--------|-------|
+| Named parameters       | [FILL] |       |
+| Default values         | [FILL] |       |
+| Variadic (`...`)       | [FILL] |       |
+| First-class / closures | [FILL] |       |
+| Overloading            | [FILL] |       |
+| Generics               | [FILL] |       |
 
 ## Calling convention
-[FILL: how arguments are passed — stack / registers / ABI target]
+[UNDEC: how arguments are passed — stack / registers / ABI target]

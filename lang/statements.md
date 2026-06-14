@@ -35,7 +35,7 @@ Condition is any expression — [FILL: must it be bool, or is truthy allowed?]
 "switch" <expr> "{" {<case-clause>} ["default" ":" {<stmt>}] "}"
 <case-clause> ::= "case" <expr> ":" {<stmt>}
 ```
-[FILL: does fallthrough occur, or is it implicit break?]
+fallthrough allowed if no `break` at end of case body.
 
 ## Break / continue
 ```

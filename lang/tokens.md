@@ -26,13 +26,13 @@ Source of truth: `../Zinc/src/lexer/lexerTypes.ts` — `TokenType` enum
 [FILL: remaining keywords from TokenType]
 
 ## Literals
-| Kind       | Example   | TokenType       | `token.data`        |
-|------------|-----------|-----------------|---------------------|
-| Integer    | `42`      | `IntLiteral`    | numeric value       |
-| Float      | `3.14`    | `FloatLiteral`  | numeric value       |
-| Char       | `'a'`     | `CharLiteral`   | char code point     |
-| String     | `"hello"` | `StringLiteral` | string intern index |
-| Identifier | `foo`     | `Identifier`    | ident intern index  |
+| Kind       | Example   | TokenType       | `token.data`                 |
+|------------|-----------|-----------------|------------------------------|
+| Integer    | `42`      | `IntLiteral`    | numeric value as i64         |
+| Float      | `3.14`    | `FloatLiteral`  | numeric value bitcast to i64 |
+| Char       | `'a'`     | `CharLiteral`   | char code point              |
+| String     | `"hello"` | `StringLiteral` | string intern index          |
+| Identifier | `foo`     | `Identifier`    | ident intern index           |
 [FILL: verify against TokenType — add any missing literal kinds]
 
 ## String templates
@@ -43,8 +43,7 @@ Syntax: `` `text ${expr} text` ``
 ## Interning
 - Identifiers: `Lexer.identMap: Map<string, number>` — `token.data` = intern index
 - String literals: `Lexer.stringMap: Map<string, number>` — `token.data` = intern index
-- Numbers/chars: `token.data` = literal numeric value directly
+- Numbers/chars: `token.data` = literal numeric value directly (for floats, there will be a bitcast once the compiler is self-hosting)
 
 ## Operators & punctuation
 See `lang/operators.md` for the full list with precedence.
-[FILL: list punctuation tokens — `{`, `}`, `(`, `)`, `[`, `]`, `:`, `,`, `.`]

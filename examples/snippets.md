@@ -24,7 +24,7 @@ let c = x >= 0 ? x : -x
 ```zn
 if x > 0 {
   return x
-} else if x < 0 {
+} else if (x < 0) {
   return -x
 } else {
   return 0
@@ -34,20 +34,20 @@ if x > 0 {
 ## While loop
 ```zn
 let i = 0
-while i < 10 {
+while (i < 10) {
   i += 1
 }
 ```
 
 ## Switch
 ```zn
-switch x {
+switch (x) {
   case 0:
-    [FILL]
+    ...
   case 1:
-    [FILL]
+    ...
   default:
-    [FILL]
+    ...
 }
 ```
 
@@ -59,8 +59,8 @@ enum Status { Ok = 0, Err = 1 }
 
 ## Import
 ```zn
-import "./math"
-import "./collections/list"
+import { furierTransform } from "./math"
+import * from "./collections/list" as list
 ```
 
 ## Function call (receiver: any expression)
@@ -80,10 +80,23 @@ let f = obj.field
 
 ## Function declaration [planned]
 ```zn
-[FILL: fn syntax once implemented]
+function add(a: i32, b: i32): i32 {
+  return a + b
+}
 ```
 
 ## For loop [planned]
 ```zn
-[FILL: for syntax once implemented]
+for(let i = 0; i < 10; i++) {
+  ...
+}
 ```
+## loop [planned]
+```zn
+loop {
+  if (condition) {
+    break
+  }
+}
+```
+
