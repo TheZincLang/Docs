@@ -24,13 +24,13 @@ Zinc does not force a trade-off between high-level and low-level code. The rule 
 The memory model reflects this: a plain `=` is a copy and the ownership system is entirely opt-in. Most programs never need to think about it.
 
 ## Multi-paradigm capabilities
-| Capability | Notes |
-|---|---|
-| Procedural | core |
-| Object-oriented | [FILL] |
-| Functional | lambdas, closures, first-class functions |
-| Networking | import-less, built-in primitives (TypeScript/Deno-style API) |
-| TypeScript-like abstractions | union types, type narrowing, string templates, etc. |
+| Capability                   | Notes                                                        |
+|------------------------------|--------------------------------------------------------------|
+| Procedural                   | core                                                         |
+| Object-oriented              | [FILL]                                                       |
+| Functional                   | lambdas, closures, first-class functions                     |
+| Networking                   | import-less, built-in primitives (TypeScript/Deno-style API) |
+| TypeScript-like abstractions | union types, type narrowing, string templates, etc.          |
 
 ## Non-goals
 - **Garbage collection**: Zinc will not include a garbage collector; instead, it uses ownership and borrowing for memory safety without GC overhead.

@@ -3,17 +3,17 @@ Zinc's native OOP model. Status: [FILL: implemented / planned / partial]
 
 ## Philosophy
 "Correct" OOP favors **many very small, highly specialized classes** over a few large
-ones. Behavior is composed from large numbers of tiny, single-purpose class *snippets*
+ones. Behavior is composed of large numbers of tiny, single-purpose class *snippets*
 that are reused across classes rather than duplicated.
 
 ## Keywords at a glance
-| Keyword       | Target           | Subtype? | Inherits impl? | "Has-a"? | Notes |
-|---------------|------------------|----------|----------------|----------|-------|
-| `extends`     | class / group    | yes      | yes            | no       | classical subtype |
-| `implements`  | class / group    | no       | yes            | no       | reuse, optimization |
-| `implements`  | interface / group| yes      | no             | no       | must define members |
-| `owns`        | class / group    | no       | no             | yes      | owner gains access to owned's protected members |
-| `serves`      | class or interface (one only) | no | no      | yes (inverse) | servant gains access to owner's protected; not instantiable without owner |
+| Keyword      | Target                        | Subtype? | Inherits impl? | "Has-a"?      | Notes                                                                     |
+|--------------|-------------------------------|----------|----------------|---------------|---------------------------------------------------------------------------|
+| `extends`    | class / group                 | yes      | yes            | no            | classical subtype                                                         |
+| `implements` | class / group                 | no       | yes            | no            | reuse, optimization                                                       |
+| `implements` | interface / group             | yes      | no             | no            | must define members                                                       |
+| `owns`       | class / group                 | no       | no             | yes           | owner gains access to owned's protected members                           |
+| `serves`     | class or interface (one only) | no       | no             | yes (inverse) | servant gains access to owner's protected; not instantiable without owner |
 
 ## Reuse vs. subtyping
 COOP separates two concerns that classical OOP conflates under "inheritance":

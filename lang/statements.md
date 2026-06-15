@@ -27,8 +27,16 @@ Condition is any expression — [FILL: must it be bool, or is truthy allowed?]
 
 ## For (not yet implemented)
 ```
-[FILL: planned for syntax]
+"for" "("  <ident> "in" <expr> ")" <block>
+"for" "(" <stmt> "," <expr> "," <stmt> ")" <block>
 ```
+basically the same as in TS
+
+## loop loop (not yet implemented)
+```
+"loop" <block>
+```
+Infinite loop, can only be exited with `break` / `return` / `throw`.
 
 ## Switch / case
 ```
