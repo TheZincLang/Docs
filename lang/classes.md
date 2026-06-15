@@ -5,7 +5,7 @@ Status: [FILL: implemented / planned / partial]
 ```
 "class" <Ident> ["extends" <Ident>] "{" {<member>} "}"
 <member> ::= <field-decl> | <method-decl> | <constructor-decl>
-<field-decl>       ::= [<modifier>] <ident> ":" <type> [";"]
+<field-decl>       ::= [<modifier>] <ident> ":" <type>
 <method-decl>      ::= [<modifier>] ("fn" | "func" | "function") <ident> "(" [<param> {"," <param>}] ")" [":" <type>] <block>
 <constructor-decl> ::= [<modifier>] "init" "(" [<param> {"," <param>}] ")" <block>
 <modifier>         ::= "pub" | "priv" | "static" | "override"
@@ -15,7 +15,7 @@ Status: [FILL: implemented / planned / partial]
 ## Example
 ```zn
 class Animal {
-  name: str;
+  name: str
 
   init(name: str) {
     self.name = name
@@ -42,25 +42,28 @@ let d: Dog = Dog("Rex")
 ## AST node
 Source: `../Zinc/src/parser/ParserTypes.ts`
 
-| Field      | Type            | Description                          |
-|------------|-----------------|--------------------------------------|
-| modifiers  | `Set<Modifier>` | class-level modifiers                |
-| id         | `number`        | class name identifier                |
-| superClass | `number \| null`| parent class identifier, or null     |
-| members    | `Node[]`        | field, method, and constructor nodes |
+| Field      | Type             | Description                          |
+|------------|------------------|--------------------------------------|
+| modifiers  | `Set<Modifier>`  | class-level modifiers                |
+| id         | `number`         | class name identifier                |
+| superClass | `number \| null` | parent class identifier, or null     |
+| members    | `Node[]`         | field, method, and constructor nodes |
 
 ## `self` reference
 `self` refers to the current instance inside methods and constructors.
 [UNDEC: is `self` implicit (like Python) or a keyword receiver (like Rust)?]
 
+## Memory
+Always heap-allocated. The user cannot change this.
+
 ## Inheritance
-| Feature              | Status   | Notes                              |
-|----------------------|----------|------------------------------------|
-| Single inheritance   | [FILL]   | via `extends`                      |
-| Multiple inheritance | [UNDEC]  |                                    |
-| Interface / trait    | [UNDEC]  | separate feature?                  |
-| `super` calls        | [UNDEC]  |                                    |
-| Method overriding    | [FILL]   | `override` modifier                |
+| Feature              | Status  | Notes               |
+|----------------------|---------|---------------------|
+| Single inheritance   | [FILL]  | via `extends`       |
+| Multiple inheritance | [UNDEC] |                     |
+| Interface / trait    | [UNDEC] | separate feature?   |
+| `super` calls        | [UNDEC] |                     |
+| Method overriding    | [FILL]  | `override` modifier |
 
 ## Access modifiers
 | Modifier  | Meaning                          |
@@ -70,10 +73,10 @@ Source: `../Zinc/src/parser/ParserTypes.ts`
 | (default) | [UNDEC: pub or priv by default?] |
 
 ## Rules
-| Rule                        | Value                                    |
-|-----------------------------|------------------------------------------|
-| Fields vs struct fields     | classes have methods; structs do not     |
-| Static members              | [UNDEC: `static` keyword on member]      |
-| Abstract classes            | [UNDEC]                                  |
-| Generics / type parameters  | [UNDEC]                                  |
-| Memory / ownership          | [UNDEC: heap-allocated? see `lang/memory.md`] |
+| Rule                       | Value                                         |
+|----------------------------|-----------------------------------------------|
+| Methods                    | supported                                     |
+| Inheritance                | supported (structs do not have it)            |
+| Static members             | [UNDEC: `static` keyword on member]           |
+| Abstract classes           | [UNDEC]                                       |
+| Generics / type parameters | [UNDEC]                                       |
