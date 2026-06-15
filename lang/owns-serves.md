@@ -50,42 +50,57 @@ class Car owns Engine {
 
 ## `serves`
 
-A class marked as serving cannot be instantiated without an owner. The owner has access
-to its protected members in the same way as `owns`.
+A servant class is a helper that latches onto an **existing** object at runtime and
+operates on it from the outside. It cannot be constructed directly — it must be attached
+via `addServant`.
 
 ### Restriction
 A class may `serves` **exactly one** target — either one class or one interface. Multiple
 targets are not allowed.
 
-### Syntax (on the served class)
+### Declaration syntax
 ```
 "class" <Ident> "serves" <Ident> "{" {<member>} "}"
 ```
 
+### Instantiation syntax
+```
+<expr> "." "addServant" "<" <Ident> ">" "(" [<arg> {"," <arg>}] ")"
+```
+`args` are passed to the servant's constructor. The servant is attached to the object
+`<expr>` evaluates to.
+
 ### Example
 ```zn
-class Inventory serves Player {
-  protected items: Item[]
-
-  fn add(item: Item) { ... }
-}
-
-class Player {
-  fn pickUp(item: Item) {
-    Inventory.add(item)       // access via class name
+class DebugOverlay serves Entity {
+  fn printState() {
+    // Entity's protected fields are accessible here
+    print(Entity.x, Entity.y, Entity.health)
   }
 }
+
+class Entity {
+  protected x: f32
+  protected y: f32
+  protected health: i32
+}
+
+// attach at runtime
+let e = Entity()
+e.addServant<DebugOverlay>()
+e.DebugOverlay.printState()
 ```
+[UNDEC: exact call syntax for invoking servant methods after attachment — `e.DebugOverlay.method()` or other]
 
 ### Comparison to `owns`
-| Aspect                             | `owns`                   | `serves`                            |
-|------------------------------------|--------------------------|-------------------------------------|
-| Who declares the relationship      | the owning class         | the serving (child) class           |
-| Instantiable without owner         | yes                      | no                                  |
-| Targets allowed                    | [UNDEC: multiple / group]| exactly one (class or interface)    |
-| Access syntax in owner             | `ClassName.x`            | `OwnerClass.x`                      |
-| Who gains protected access         | owner → owned's protected | servant → owner's protected        |
-| Effect on other class's behavior   | none                     | none                                |
+| Aspect                           | `owns`                    | `serves`                              |
+|----------------------------------|---------------------------|---------------------------------------|
+| Who declares the relationship    | the owning class          | the serving (helper) class            |
+| Instantiation                    | automatic with the owner  | explicit `addServant<T>(args)` call   |
+| Instantiable standalone          | yes                       | no                                    |
+| Targets allowed                  | [UNDEC: multiple / group] | exactly one (class or interface)      |
+| Who gains protected access       | owner → owned's protected | servant → owner's protected           |
+| Effect on owner's behavior       | none                      | none                                  |
 
 ---
 
