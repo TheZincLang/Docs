@@ -3,7 +3,7 @@ Status: [FILL: implemented / planned / partial]
 
 ## Syntax
 ```
-"class" <Ident> ["extends" <Ident>] "{" {<member>} "}"
+"class" <Ident> ["extends" <Ident>] ["implements" <Ident> {"," <Ident>}] "{" {<member>} "}"
 <member> ::= <field-decl> | <method-decl> | <constructor-decl>
 <field-decl>       ::= [<modifier>] <ident> ":" <type>
 <method-decl>      ::= [<modifier>] ("fn" | "func" | "function") <ident> "(" [<param> {"," <param>}] ")" [":" <type>] <block>
@@ -56,14 +56,31 @@ Source: `../Zinc/src/parser/ParserTypes.ts`
 ## Memory
 Always heap-allocated. The user cannot change this.
 
-## Inheritance
-| Feature              | Status  | Notes               |
-|----------------------|---------|---------------------|
-| Single inheritance   | [FILL]  | via `extends`       |
-| Multiple inheritance | [UNDEC] |                     |
-| Interface / trait    | [UNDEC] | separate feature?   |
-| `super` calls        | [UNDEC] |                     |
-| Method overriding    | [FILL]  | `override` modifier |
+## Reuse and inheritance (COOP)
+Zinc splits classical inheritance into two keywords. See `lang/coop.md` for the paradigm
+and `lang/interfaces.md` for interfaces.
+
+| Clause                   | Brings fields + methods | A usable *as* the target | Typical use            |
+|--------------------------|-------------------------|--------------------------|------------------------|
+| `extends B` (class)      | yes                     | yes                      | true subtype           |
+| `implements B` (class)   | yes                     | no                       | optimization / reuse   |
+| `implements I` (interface)| no — class must define   | yes                      | polymorphism / typing  |
+
+- `extends` behaves like classical inheritance: `A extends B` means an `A` can be used
+  anywhere a `B` is expected.
+- `implements` on a **class** copies in that class's fields and methods but does **not**
+  make the implementer usable as the implemented class. Mainly an optimization tool.
+- `implements` on an **interface** requires the class to satisfy the interface; in return
+  the class can be used as that interface. Interfaces cannot be instantiated or used like
+  structs.
+
+| Feature              | Status  | Notes                             |
+|----------------------|---------|-----------------------------------|
+| Single `extends`     | [FILL]  |                                   |
+| Multiple inheritance | [UNDEC] |                                   |
+| `extends` + `implements` together | [UNDEC] | assumed allowed     |
+| `super` calls        | [UNDEC] |                                   |
+| Method overriding    | [FILL]  | `override` modifier               |
 
 ## Access modifiers
 | Modifier  | Meaning                          |
