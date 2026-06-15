@@ -83,16 +83,22 @@ class Player {
 | Who declares the relationship      | the owning class         | the serving (child) class           |
 | Instantiable without owner         | yes                      | no                                  |
 | Targets allowed                    | [UNDEC: multiple / group]| exactly one (class or interface)    |
-| Access syntax in owner             | `ClassName.x`            | `ClassName.x`                       |
-| Protected access granted to owner  | yes                      | yes                                 |
+| Access syntax in owner             | `ClassName.x`            | `OwnerClass.x`                      |
+| Who gains protected access         | owner → owned's protected | servant → owner's protected        |
 | Effect on other class's behavior   | none                     | none                                |
 
 ---
 
 ## Protected access
-Both `owns` and `serves` relationships grant the **owning / served-to** class access to
-the other class's `protected` fields and methods. This access is unidirectional from the
-perspective of external callers — the owned/served class exposes nothing extra to anyone
-else.
+The direction differs between the two keywords:
+
+| Keyword | Who gains access            | To whose protected members |
+|---------|-----------------------------|----------------------------|
+| `owns`  | the **owner**               | the **owned** class        |
+| `serves`| the **servant**             | the **owner** class        |
+
+`serves` grants the servant access to its owner's internals so it can do its job —
+not the other way around. The owner class's behavior toward all other callers is
+completely unchanged (no action at a distance).
 
 [UNDEC: exact `protected` modifier keyword — `protected` vs `prot` vs other]
