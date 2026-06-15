@@ -3,7 +3,12 @@ Status: [FILL: implemented / planned / partial]
 
 ## Syntax
 ```
-"class" <Ident> ["extends" <Ident>] ["implements" <Ident> {"," <Ident>}] "{" {<member>} "}"
+"class" <Ident>
+  ["extends" <Ident>]
+  ["implements" <Ident> {"," <Ident>}]
+  ["owns" <Ident> {"," <Ident>}]
+  ["serves" <Ident>]
+"{" {<member>} "}"
 <member> ::= <field-decl> | <method-decl> | <constructor-decl>
 <field-decl>       ::= [<modifier>] <ident> ":" <type>
 <method-decl>      ::= [<modifier>] ("fn" | "func" | "function") <ident> "(" [<param> {"," <param>}] ")" [":" <type>] <block>
@@ -90,10 +95,13 @@ and `lang/interfaces.md` for interfaces.
 | (default) | [UNDEC: pub or priv by default?] |
 
 ## Rules
-| Rule                       | Value                                         |
-|----------------------------|-----------------------------------------------|
-| Methods                    | supported                                     |
-| Inheritance                | supported (structs do not have it)            |
-| Static members             | [UNDEC: `static` keyword on member]           |
-| Abstract classes           | [UNDEC]                                       |
-| Generics / type parameters | [UNDEC]                                       |
+| Rule                       | Value                                              |
+|----------------------------|----------------------------------------------------|
+| Methods                    | supported                                          |
+| Inheritance                | supported via `extends` (structs do not have it)   |
+| `serves` targets           | exactly one class or interface                     |
+| `serves` + group           | not allowed                                        |
+| Protected access           | granted by `owns` and `serves` — see `lang/owns-serves.md` |
+| Static members             | [UNDEC: `static` keyword on member]                |
+| Abstract classes           | [UNDEC]                                            |
+| Generics / type parameters | [UNDEC]                                            |
