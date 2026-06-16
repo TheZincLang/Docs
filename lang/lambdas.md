@@ -22,7 +22,7 @@ type defaults to `void` and is otherwise inferred by a later pass.
 
 ## Example
 ```zn
-let colorPixel: (color: string) => void = [x, ref y](color: string) => {
+let colorPixel: (color: string): void = [x, ref y](color: string) => {
     setColor(x, y, color)
 }
 
@@ -35,14 +35,14 @@ let add = (a: int, b: int): int => {
 ## Capture list
 Variables in `[...]` are captured from the enclosing scope. Any ownership operator from `lang/memory.md` may be used as a modifier; the default is `copy`.
 
-| Syntax | Capture mode |
-|---|---|
-| `x` | copy (default) |
-| `copy x` | copy — explicit |
-| `ref x` | read-only reference |
-| `borrow x` / `bor x` | mutable borrow |
-| `move x` | transfer ownership; original is invalidated after capture |
-| `*` | wildcard — applies the preceding modifier (or `copy` if none) to all variables used in the body that are not explicitly listed |
+| Syntax               | Capture mode                                                                                                                   |
+|----------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| `x`                  | copy (default)                                                                                                                 |
+| `copy x`             | copy — explicit                                                                                                                |
+| `ref x`              | read-only reference                                                                                                            |
+| `borrow x` / `bor x` | mutable borrow                                                                                                                 |
+| `move x`             | transfer ownership; original is invalidated after capture                                                                      |
+| `*`                  | wildcard — applies the preceding modifier (or `copy` if none) to all variables used in the body that are not explicitly listed |
 
 ```zn
 [ref *]           // everything by ref
