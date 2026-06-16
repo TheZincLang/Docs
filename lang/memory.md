@@ -40,8 +40,7 @@ The inference is **inside-out**: each function computes what effect it has on th
 
 Rules the inference relies on:
 - A `borrow` or `ref` cannot outlive the value it points to
-- When a closure captures a variable: if the captured variable outlives the closure → captured as `ref`; if the closure outlives the variable → captured by `copy`
-- Lambdas (pure function pointers, no capture) are a black box — their inputs' ownership types are unchanged by the call, outputs are always owned
+- Lambdas (pure function pointers, no capture) are a black box — their inputs' ownership types are unchanged by the call outside of ownership operators that already existin the signature, outputs are always owned
 
 ## Raw pointers
 Raw pointers (`[FILL: syntax]`) exist for bare-metal use cases where a specific memory address must be targeted directly. They bypass the ownership system entirely and should not be used in normal code.
