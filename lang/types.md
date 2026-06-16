@@ -18,7 +18,7 @@ Source of truth: `../Zinc/src/global/types/globalTypes.ts` — `TypeKind` enum
 | `TypeAlias`     | Type alias                                    | [UNDEC: alias syntax not yet defined]                 |
 | `Union`         | Tagged union (T \| U \| ...)                  | TS-style syntax; C++ `std::variant` at runtime        |
 | `Function`      | Named function type                           |                                                       |
-| `Lambda`        | Function pointer / lambda                     | no captured environment; see `lang/lambdas.md`        |
+| `Lambda`        | Lambda / callable value                       | see `lang/lambdas.md`                                 |
 | `Method`        | Bound method on a struct or class             |                                                       |
 | `Array`         | Array of element type                         | T[] — nestable; parsed by `parseType()`               |
 | `Tuple`         | Fixed-length heterogeneous sequence           | [UNDEC: syntax not yet defined]                       |

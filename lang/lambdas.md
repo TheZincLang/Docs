@@ -1,43 +1,50 @@
-# Lambdas & Closures
-Zinc distinguishes between two related but distinct concepts.
+# Lambdas
+Status: [FILL]
 
-## Lambda
-A lambda is a **function pointer variable** — a value that holds the address of a function and can be called, copied, and overwritten like any other variable. It carries no captured environment.
+A lambda is a callable value — a function expression that optionally captures variables from its enclosing scope. There is no user-facing distinction between "lambda" and "closure"; both use the same syntax. The difference is internal: a lambda with no captures compiles to a plain function pointer; one with captures carries an environment.
 
-```zn
-[FILL: lambda literal / assignment syntax]
-let double: [FILL: lambda type syntax] = [FILL]
-double(4) // jumps to address stored in double
+## Syntax
+```
+["[" [<capture> {"," <capture>}] "]"] "(" [<param> {"," <param>}] ")" "=>" <block>
+<capture> ::= [<modifier>] <ident> | [<modifier>] "*"
+<modifier> ::= "copy" | "ref" | "borrow" | "bor" | "move"
+<param>    ::= <ident> ":" <type>
 ```
 
-### Lifetime contract
-Lambdas are a **black box for lifetime inference**:
-- Ownership/borrow/ref status is encoded in the parameter types themselves — the lambda cannot change it
+The capture list `[...]` is optional — omitting it is equivalent to no captures.
+
+## Type annotation
+```
+"(" [<param-type> {"," <param-type>}] ")" "=>" <return-type>
+```
+
+## Example
+```zn
+let colorPixel: (color: string) => void = [x, ref y](color: string) => {
+    setColor(x, y, color)
+}
+```
+
+## Capture list
+Variables in `[...]` are captured from the enclosing scope. Any ownership operator from `lang/memory.md` may be used as a modifier; the default is `copy`.
+
+| Syntax | Capture mode |
+|---|---|
+| `x` | copy (default) |
+| `copy x` | copy — explicit |
+| `ref x` | read-only reference |
+| `borrow x` / `bor x` | mutable borrow |
+| `move x` | transfer ownership; original is invalidated after capture |
+| `*` | wildcard — applies the preceding modifier (or `copy` if none) to all variables used in the body that are not explicitly listed |
+
+```zn
+[ref *]           // everything by ref
+[x, ref *]        // x by copy, everything else by ref
+[move x, copy *]  // move x, copy everything else
+```
+
+## Lifetime contract
+Lambdas are a black box for lifetime inference:
+- Ownership/borrow/ref status is encoded in the parameter types
 - Outputs are always owned values
 - Calling a lambda has no lifetime side-effects on its inputs beyond what the types already describe
-
-This means the inference system never needs to inspect a lambda's body to track lifetimes at the call site.
-
-## Closure
-A closure is a function that **captures variables from its enclosing scope**. Capture mode is determined automatically by lifetime inference — no manual annotation required:
-
-| Situation | Capture mode |
-|---|---|
-| Captured variable outlives the closure | borrow (reference) |
-| Closure outlives the captured variable | copy |
-
-```zn
-[FILL: closure syntax]
-```
-
-## Comparison
-| | Lambda | Closure |
-|---|---|---|
-| Captured environment | none | yes (auto copy or borrow) |
-| Lifetime inference role | black box | inlined like any other borrow/copy |
-| Callable | yes | yes |
-| Copyable | yes | [FILL] |
-| Overwritable | yes | [FILL] |
-
-## Status
-[FILL: planned / in progress / implemented]
