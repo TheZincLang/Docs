@@ -32,7 +32,7 @@ Condition is any expression — [FILL: must it be bool, or is truthy allowed?]
 ```
 basically the same as in TS
 
-## loop loop (not yet implemented)
+## loop
 ```
 "loop" <block>
 ```

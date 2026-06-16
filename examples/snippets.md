@@ -91,12 +91,35 @@ for(let i = 0; i < 10; i++) {
   ...
 }
 ```
-## loop [planned]
+## loop
 ```zn
 loop {
   if (condition) {
     break
   }
+}
+```
+
+## Array literals
+```zn
+let empty = []
+let primes = [2, 3, 5, 7, 11]
+let nested = [[1, 2], [3, 4]]
+let first = [10, 20, 30][0]   // literal followed by index
+```
+
+## Lambdas / closures
+```zn
+let inc = (x: int): int => {
+  return x + 1
+}
+
+// capture list: copy by default, `ref`/`borrow`/`move` to change mode, `*` wildcard
+let adder = [base, ref log](x: int): int => {
+  return x + base
+}
+let sumAll = [ref *](a: int, b: int) => {
+  return a + b
 }
 ```
 

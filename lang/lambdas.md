@@ -1,17 +1,19 @@
 # Lambdas
-Status: [FILL]
+Status: Parsed (`LambdaNode`); semantic analysis and codegen pending.
 
 A lambda is a callable value — a function expression that optionally captures variables from its enclosing scope. There is no user-facing distinction between "lambda" and "closure"; both use the same syntax. The difference is internal: a lambda with no captures compiles to a plain function pointer; one with captures carries an environment.
 
 ## Syntax
 ```
-["[" [<capture> {"," <capture>}] "]"] "(" [<param> {"," <param>}] ")" "=>" <block>
+["[" [<capture> {"," <capture>}] "]"] "(" [<param> {"," <param>}] ")" [":" <return-type>] "=>" <block>
 <capture> ::= [<modifier>] <ident> | [<modifier>] "*"
 <modifier> ::= "copy" | "ref" | "borrow" | "bor" | "move"
 <param>    ::= <ident> ":" <type>
 ```
 
 The capture list `[...]` is optional — omitting it is equivalent to no captures.
+The return type annotation `: <return-type>` is optional; when omitted the return
+type defaults to `void` and is otherwise inferred by a later pass.
 
 ## Type annotation
 ```
@@ -22,6 +24,11 @@ The capture list `[...]` is optional — omitting it is equivalent to no capture
 ```zn
 let colorPixel: (color: string) => void = [x, ref y](color: string) => {
     setColor(x, y, color)
+}
+
+// with an explicit return type on the value:
+let add = (a: int, b: int): int => {
+    return a + b
 }
 ```
 

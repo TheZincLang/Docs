@@ -25,7 +25,7 @@ Parsed in `parsePostfix`. AST node: `CallNode` (`{object, arguments}`).
 | Named parameters       | [FILL] |                       |
 | Default values         | [FILL] |                       |
 | Variadic (`...`)       | [FILL] |                       |
-| First-class / closures | [FILL] | see `lang/lambdas.md` |
+| First-class / closures | Parsed (`LambdaNode`) | see `lang/lambdas.md` |
 | Overloading            | [FILL] |                       |
 | Generics               | [FILL] |                       |
 
