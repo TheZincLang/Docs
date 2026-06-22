@@ -1,5 +1,5 @@
 # Type System
-Source of truth: `../Zinc/src/global/types/globalTypes.ts` — `TypeKind` enum
+Source of truth: the compiler repo's `src/global/types/globalTypes.ts` (`TypeKind` enum)
 
 ## TypeKind values
 | TypeKind        | Description                                   | Notes                                                 |
@@ -25,8 +25,8 @@ Source of truth: `../Zinc/src/global/types/globalTypes.ts` — `TypeKind` enum
 | `Optional`      | Nullable wrapper                              | [UNDEC: T? syntax not yet defined]                    |
 | `Reference`     | Read-only reference (`ref T`)                 | see `lang/memory.md`                                  |
 | `Pointer`       | Raw unsafe pointer                            | bypasses ownership; see `lang/memory.md`              |
-| `TypeParameter` | Generic type variable                         | T in `fn foo<T>` — [UNDEC: generics not yet designed] |
-| `Generic`       | Concrete generic instantiation                | Foo<T, U> — [UNDEC: generics not yet designed]        |
+| `TypeParameter` | Generic type variable                         | T in `fn foo<T>` — declarations parse; see `lang/generics.md` |
+| `Generic`       | Concrete generic instantiation                | Foo<T, U> — type arguments parse to a `Generic` `TypeNode`; see `lang/generics.md` |
 | `Unknown`       | Not yet inferred                              | compiler-internal; never user-visible                 |
 | `Inferred`      | Successfully inferred, pending resolution     | compiler-internal                                     |
 | `Error`         | Type error placeholder                        | lets inference continue past a type error             |
@@ -50,7 +50,8 @@ rules.
 | Kind            | Syntax                                         | AST node                       |
 |-----------------|------------------------------------------------|--------------------------------|
 | Array           | `<type>[]`                                     | `TypeNode` (`Array`, nestable) |
-| Union           | `<type> "\|" <type> {"\|" <type>}`             | `TypeNode` (`Union`)           |
+| Union           | `<type> "\|" <type> {"\|" <type>}`             | `TypeNode` (`Union`, ≥2 members) |
+| Generic         | `<name> "<" <type> {"," <type>} ">"`           | `TypeNode` (`Generic`, nestable) |
 | Enum            | `enum Name { ... }`                            | `EnumNode`                     |
 | Struct          | `"struct" Name "{" {<member>} "}"`             | `StructNode`                   |
 | Class           | `"class" Name [<clauses>] "{" {<member>} "}"`  | `ClassNode`                    |
@@ -63,6 +64,13 @@ constructors, or inheritance. A class is heap-allocated and supports
 syntax. Both register their name in the parser's `declaredTypes` set.
 
 ## Union types
+Status: **parses** — `parseType()` parses a `|`-separated list of members into a
+`TypeNode` `Union` (each member is a name plus `[]` suffixes; duplicate members
+are rejected). The semantics below (narrowing, tagged-union runtime layout,
+member assignability) belong to the type checker, which is not implemented;
+`TypeKind.Union` is still only a reserved enum value. The rest of this section is
+the intended design.
+
 Union types follow TypeScript syntax exactly. A union is a `|`-separated list of
 two or more types that describes a value that can hold any one of those types at
 a given moment.
@@ -144,8 +152,8 @@ fn first(arr: int[] | null): int | null {
 ```
 <ident> ":" <type>           // variable or parameter / struct field
 <function> ":" <type>        // return type
-<type>    ::= <member> {"|" <member>}    // union (two or more)
-<member>  ::= <name> {"[]"}              // a primitive or user type, plus array suffixes
+<type>    ::= <member> {"|" <member>}    // union (two or more members) — parsed by parseType()
+<member>  ::= <name> ["<" <type> {"," <type>} ">"] {"[]"}  // a primitive/user type, optional generic args, plus array suffixes — parsed by parseTypeMember()
 ```
 A type annotation parses to a `TypeNode` (`parseType()`): a `Name` node carries
 the interned id of the written name plus a `resolved: TypeKind` (set for known

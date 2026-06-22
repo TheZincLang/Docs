@@ -1,5 +1,5 @@
 # Compiler Errors
-Sources: `../Zinc/src/lexer/lexerTypes.ts` (LexerError) · `../Zinc/src/parser/ParserTypes.ts` (ParserError) · `../Zinc/src/global/types/globalTypes.ts` (BugError)
+Sources (in the compiler repo): `src/lexer/lexerTypes.ts` (LexerError) · `src/parser/ParserTypes.ts` (ParserError) · `src/global/types/globalTypes.ts` (BugError)
 
 ## Error output format
 [UNDEC]

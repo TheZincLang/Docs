@@ -5,7 +5,7 @@ All examples use `.zn` syntax. Verified working unless marked `[FILL]` or `[plan
 ```zn
 let x: i32 = 42
 const name = "zinc"
-let flag = true
+let flag = True
 ```
 
 ## String template
@@ -22,7 +22,7 @@ let c = x >= 0 ? x : -x
 
 ## If / else
 ```zn
-if x > 0 {
+if (x > 0) {
   return x
 } else if (x < 0) {
   return -x
@@ -42,12 +42,15 @@ while (i < 10) {
 ## Switch
 ```zn
 switch (x) {
-  case 0:
+  case 0: {
     ...
-  case 1:
+  }
+  case 1: {
     ...
-  default:
+  }
+  default: {
     ...
+  }
 }
 ```
 
@@ -60,7 +63,8 @@ enum Status { Ok = 0, Err = 1 }
 ## Import
 ```zn
 import { furierTransform } from "./math"
-import * from "./collections/list" as list
+import * as list from "./collections/list"
+import types { Vector } from "./math"
 ```
 
 ## Function call (receiver: any expression)
@@ -78,16 +82,22 @@ let v = arr[i]
 let f = obj.field
 ```
 
-## Function declaration [planned]
+## Function declaration
 ```zn
 function add(a: i32, b: i32): i32 {
   return a + b
 }
 ```
 
-## For loop [planned]
+## For loop
 ```zn
-for(let i = 0; i < 10; i++) {
+// C-style: three ;-separated clauses, each optional
+for (let i = 0; i < 10; i++) {
+  ...
+}
+
+// for-in: iterate elements
+for (item in items) {
   ...
 }
 ```

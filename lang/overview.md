@@ -37,15 +37,13 @@ The memory model reflects this: a plain `=` is a copy and the ownership system i
 - **Scripting language features**: Zinc supports high-level abstractions and runtime dynamic features through lambdas and closures, but it is an AOT compiled language focused on performance and safety — not an interpreted or fully dynamic scripting language.
 
 ## Implementation status
-Sync with `../Zinc/CLAUDE.md` § "Current implementation status".
+Sync with the compiler repo's `CLAUDE.md` § "Current implementation status".
 
 **Done:**
 - Lexer (complete or near-complete)
-- Parser (working; `for` loop is the last missing construct for Turing completeness)
+- Parser: variable declarations (`let`/`const`), enums, structs, classes (with `extends`/`implements`/`owns`/`serves` clauses and member modifiers), interfaces (field + method signatures), groups (bulk clause targets), functions (`fn`/`func`/`function`), lambdas/closures, array literals, `loop`, `for` (C-style three-clause and `for`-in), all expression forms and operators, union types (`T | U`), generics (type-parameter declarations at binding sites + generic type arguments in annotations), `if`/`else`, `while`, `switch`, `break`/`continue`/`return`, `import` statements (named / wildcard / aliased / type-only)
 
 **Pending:**
-- `for` loop parsing
-- Function declaration parsing (`fn`/`func`/`function`)
-- Type checker
+- Type checker (incl. interface conformance, group expansion, union narrowing, generic arity/constraints)
 - Lifetime inference
 - Code generation (LLVM backend)

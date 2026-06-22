@@ -1,5 +1,8 @@
 # Owns / Serves
-Status: [FILL: implemented / planned / partial]
+Status: **partial** — the `owns` and `serves` clauses parse on a class header
+(targets stored as interned identifiers; `owns` takes a list, `serves` exactly
+one). All semantics — embedded instances, `addServant`, protected-member access —
+are not yet implemented.
 
 Two keywords for permanent "has-a" composition. Both grant access to each other's
 protected members. Neither affects the other class's behavior toward unrelated callers
@@ -17,7 +20,9 @@ in each of its objects.
 MyOwnedClass.field
 MyOwnedClass.method()
 ```
-Uses the **class name** as the accessor, not `self` or `this`.
+Uses the **class name** as the accessor, not `self` or `this`. Owned members use `.`
+(not `::`) because an owned instance is a real runtime sub-object with storage and
+identity — `ref self.Engine` is valid. See the `::` vs `.` distinction in `lang/coop.md`.
 
 ### Example
 ```zn

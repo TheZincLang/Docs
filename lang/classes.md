@@ -4,7 +4,9 @@ Status: implemented
 ## Syntax
 ```
 "class" <Ident>
+  ["<" <type-param> {"," <type-param>} ">"]
   ["extends" <Ident>]
+  ["mixin" <Ident> {"," <Ident>}]
   ["implements" <Ident> {"," <Ident>}]
   ["owns" <Ident> {"," <Ident>}]
   ["serves" <Ident>]
@@ -17,7 +19,7 @@ Status: implemented
 <param>            ::= <ident> ":" <type>
 ```
 
-Inheritance clauses appear in fixed order: `extends`, then `implements`, then `owns`, then `serves`. Each is optional and independent.
+Inheritance clauses appear in fixed order: `extends`, then `mixin`, then `implements`, then `owns`, then `serves`. Each is optional and independent. `mixin` is class code-reuse; `implements` takes interfaces. See `lang/mixins.md`.
 
 ## Example
 ```zn
@@ -58,13 +60,14 @@ let d: Dog = Dog("Rex")
 [UNDEC: `new` keyword required, or bare constructor call?]
 
 ## AST nodes
-Source: `../Zinc/src/parser/ParserTypes.ts`
+Source: the compiler repo's `src/parser/ParserTypes.ts`
 
 ### ClassNode
 | Field             | Type             | Description                                    |
 |-------------------|------------------|------------------------------------------------|
 | modifiers         | `Set<Modifier>`  | class-level modifiers (e.g. `export`)          |
 | id                | `number`         | interned identifier of the class name          |
+| typeParameters    | `number[]`       | generic type-parameter ids (`class Box<T>`); empty when none — see `lang/generics.md` |
 | superClass        | `number \| null` | `extends` target identifier, or null           |
 | implementsTargets | `number[]`       | `implements` clause target identifiers         |
 | owns              | `number[]`       | `owns` clause target identifiers               |
@@ -95,26 +98,28 @@ Methods are represented as `FunctionNode` with the member modifiers stored in `F
 Always heap-allocated. The user cannot change this.
 
 ## Reuse and inheritance (COOP)
-Zinc splits classical inheritance into two keywords. See `lang/coop.md` for the paradigm
-and `lang/interfaces.md` for interfaces.
+Zinc splits classical inheritance into three keywords. See `lang/coop.md` for the paradigm,
+`lang/mixins.md` for reuse, and `lang/interfaces.md` for interfaces.
 
 | Clause                     | Brings fields + methods | A usable *as* the target | Typical use           |
 |----------------------------|-------------------------|--------------------------|-----------------------|
 | `extends B` (class)        | yes                     | yes                      | true subtype          |
-| `implements B` (class)     | yes                     | no                       | optimization / reuse  |
+| `mixin B` (class)          | yes                     | no                       | optimization / reuse  |
 | `implements I` (interface) | no — class must define  | yes                      | polymorphism / typing |
 
 - `extends` behaves like classical inheritance: `A extends B` means an `A` can be used
   anywhere a `B` is expected.
-- `implements` on a **class** copies in that class's fields and methods but does **not**
-  make the implementer usable as the implemented class. Mainly an optimization tool.
-- `implements` on an **interface** requires the class to satisfy the interface; in return
-  the class can be used as that interface. Interfaces cannot be instantiated or used like
+- `mixin B` copies in `B`'s fields and method bodies but does **not** make the target
+  usable as `B`. Members are accessed with `::` (no runtime sub-entity). See
+  `lang/mixins.md`.
+- `implements` takes an **interface** and requires the class to satisfy it; in return the
+  class can be used as that interface. Interfaces cannot be instantiated or used like
   structs.
 
 | Feature                           | Status      | Notes                               |
 |-----------------------------------|-------------|-------------------------------------|
 | Single `extends`                  | implemented |                                     |
+| `mixin` clause                    | implemented |                                     |
 | Multiple `implements` targets     | implemented |                                     |
 | Multiple `owns` targets           | implemented |                                     |
 | Single `serves` target            | implemented |                                     |
@@ -144,4 +149,4 @@ and `lang/interfaces.md` for interfaces.
 | Protected access           | granted by `owns` and `serves` — see `lang/owns-serves.md` |
 | Static members             | supported via `static` modifier                             |
 | Abstract classes           | [UNDEC]                                                     |
-| Generics / type parameters | [UNDEC]                                                     |
+| Generics / type parameters | supported on type definitions — see `lang/generics.md`     |

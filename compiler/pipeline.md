@@ -1,14 +1,22 @@
 # Compiler Pipeline
-Full detail: `../Zinc/CLAUDE.md` § Architecture. This file adds what CLAUDE.md omits.
+Full detail: the compiler repo's `CLAUDE.md` § Architecture. This file adds what that file omits.
 
 ## Stages
-| # | Stage            | Fn                    | Input     | Output                                                           |
-|---|------------------|-----------------------|-----------|------------------------------------------------------------------|
-| 1 | Import discovery | `lexer.findImports()` | file path | `string[]` import paths                                          |
-| 2 | Lex              | `lexer.lexFile()`     | file path | `Token[]`                                                        |
-| 3 | Parse            | `parser.parseFile()`  | `Token[]` | `Program` AST root                                               |
-| 4 | resolve imports  | handled in compile.ts | `Program` | `Program`                                                        |
-| 5 | type checking    | typeChecker.check()   | `Program` | void (doesn´t output anything, only throws when types are wrong) |
+Stages 1–3 are implemented. Stages 4–5 are planned and not yet wired up.
+
+| # | Stage                      | Fn                    | Input     | Output                                                           |
+|---|----------------------------|-----------------------|-----------|------------------------------------------------------------------|
+| 1 | Import discovery           | `lexer.findImports()` | file path | `string[]` import paths                                          |
+| 2 | Lex                        | `lexer.lexFile()`     | file path | `Token[]`                                                        |
+| 3 | Parse                      | `parser.parseFile()`  | `Token[]` | `Program` AST root                                               |
+| 4 | resolve imports *(planned)*| —                     | `Program` | `Program`                                                        |
+| 5 | type checking *(planned)*  | `typeChecker.check()` | `Program` | void (only throws when types are wrong)                          |
+
+The current driver (`compile.ts`) runs stage 1 across the whole import graph (BFS),
+then runs stages 2–3 per file via `FileManager.buildAST()` and pretty-prints the
+tokens and AST. `import` *statements* now parse into `ImportNode`s (stage 3), but
+binding those imports to the exporting files' symbols (stage 4) and type checking
+(stage 5) are not wired up yet — they remain design intent.
 
 
 ## Entry points
@@ -29,5 +37,9 @@ FileManager
 ```
 
 ## Identifier / string interning scope
-Interning maps live on `Lexer` — they are **per-file**, not global.
-[FILL: confirm — are intern indices stable across files, or local only?]
+Interning maps live on `Lexer` — they are **per-file**, not global. Each
+`FileManager` owns its own `Lexer`, so intern indices are **local to a file**: the
+same identifier or string gets independent indices in different files, and an index
+is only meaningful alongside the `Lexer` that produced it (its `getSymbolTable()`
+reverse-maps index → spelling). Cross-file symbol resolution will need its own
+mapping once imports are wired up.

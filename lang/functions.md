@@ -27,7 +27,7 @@ Parsed in `parsePostfix`. AST node: `CallNode` (`{object, arguments}`).
 | Variadic (`...`)       | [FILL] |                       |
 | First-class / closures | Parsed (`LambdaNode`) | see `lang/lambdas.md` |
 | Overloading            | [FILL] |                       |
-| Generics               | [FILL] |                       |
+| Generics               | Parsed | `fn name<T, U>(...)` — type params stored on `FunctionNode.typeParameters`; see `lang/generics.md` |
 
 ## Calling convention
 [UNDEC: how arguments are passed — stack / registers / ABI target]

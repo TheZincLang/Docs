@@ -18,13 +18,14 @@ enum Color {
 Uninitialized variants auto-increment from previous value (like C).
 
 ## AST node
-Source: `../Zinc/src/parser/ParserTypes.ts`
+Source: the compiler repo's `src/parser/ParserTypes.ts`
 
-| Field     | Type            | Description               |
-|-----------|-----------------|---------------------------|
-| modifiers | `Set<Modifier>` | enum modifiers like const |
-| id        | `number`        | enum identifier           |
-| options   | `Node[]`        | enum options              |
+| Field     | Type                | Description                                            |
+|-----------|---------------------|-------------------------------------------------------|
+| id        | `number`            | interned identifier of the enum name                  |
+| modifiers | `Set<Modifier>`     | enum modifiers (e.g. `const`)                         |
+| type      | `TypeNode`          | backing type (e.g. `: u8`); `Unknown` when omitted    |
+| options   | `EnumOptionNode[]`  | each option is `{id, value?}` (`value` = `Node` expr) |
 
 ## Usage
 ```zn

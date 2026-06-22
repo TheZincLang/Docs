@@ -1,5 +1,9 @@
 # Interfaces
-Status: [FILL: implemented / planned / partial]
+Status: **parses** — the `interface` keyword and interface *declarations* parse to
+an `InterfaceNode` (member signatures become `FieldNode` / `MethodSignatureNode`).
+A class may name an interface in its `implements` clause. Semantic checking
+(conformance, "implementing class defines every signature") is not implemented —
+there is no type checker yet.
 
 Interfaces declare a set of fields and method signatures that a class can `implements`.
 Unlike structs and classes, an interface **cannot be instantiated or used as a value
@@ -13,7 +17,8 @@ used *as* that interface (nominal).
 <field-sig>  ::= <ident> ":" <type>
 <method-sig> ::= ("fn" | "func" | "function") <ident> "(" [<param> {"," <param>}] ")" [":" <type>]
 ```
-[UNDEC: do interfaces declare fields too, or method signatures only?]
+Both field signatures and method signatures parse. A method signature has no body;
+an omitted return type defaults to `void`. Duplicate member names are rejected.
 
 ## Example
 ```zn
@@ -44,4 +49,4 @@ class Dog implements Speaker {
 | `implements` provides methods | no — implementing class must define them      |
 | Interface extends interface   | [UNDEC]                                        |
 | Default methods               | [UNDEC]                                        |
-| Generic interfaces            | [UNDEC]                                        |
+| Generic interfaces            | yes — interfaces are a generic binding site; see `lang/generics.md` |

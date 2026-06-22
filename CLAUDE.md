@@ -16,6 +16,12 @@ Separate repo. Companion compiler repo: `../Zinc` (CLAUDE.md: `../Zinc/CLAUDE.md
 | Enum syntax and AST representation                    | `lang/enums.md`        |
 | Struct syntax, members, and AST nodes                 | `lang/structs.md`      |
 | Class syntax, COOP inheritance, modifiers, AST nodes  | `lang/classes.md`      |
+| COOP paradigm overview (the OOP model)                | `lang/coop.md`         |
+| Interfaces                                            | `lang/interfaces.md`   |
+| Mixins (header-style reuse), collision/provenance     | `lang/mixins.md`       |
+| Generics, type parameters, binding sites              | `lang/generics.md`     |
+| `owns` / `serves` composition                         | `lang/owns-serves.md`  |
+| Groups (bulk clause targets)                          | `lang/groups.md`       |
 | Compiler error codes and messages                     | `compiler/errors.md`   |
 | Pipeline stages and orchestration                     | `compiler/pipeline.md` |
 | Annotated .zn code examples                           | `examples/snippets.md` |

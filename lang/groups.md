@@ -1,5 +1,9 @@
 # Groups
-Status: [FILL: implemented / planned / partial]
+Status: **parses** — the `group` keyword and group declarations parse to a
+`GroupNode` (a list of referenced type ids). The group name resolves when used in
+an `extends`/`implements`/`owns` clause. Expanding a group reference into its
+members (and rejecting it in `serves` / type-annotation position) is a semantic
+concern and is not implemented — there is no type checker yet.
 
 A group is a named collection of classes used to keep class signatures concise when
 bulk-applying `extends`, `implements`, or `owns`.

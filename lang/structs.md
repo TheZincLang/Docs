@@ -31,7 +31,7 @@ let p: Point = Point { x: 1, y: 2 }
 [UNDEC: named-field initializer syntax confirmed, or positional, or both?]
 
 ## AST nodes
-Source: `../Zinc/src/parser/ParserTypes.ts`
+Source: the compiler repo's `src/parser/ParserTypes.ts`
 
 ### StructNode
 | Field     | Type            | Description                                    |

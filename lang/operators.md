@@ -1,31 +1,34 @@
 # Operators & Precedence
 Highest precedence last (parser resolves lowest first in recursive descent).
-Parser chain: `parseAssignment → parseTernary → parseLogicalOr → parseLogicalAnd → parseBitwiseOr → parseBitwiseXor → parseBitwiseAnd → parseEquality → parseRelational → parseShift → parseAddSub → parseMulDiv → parseUnary → parsePostfix → parsePrimary`
+Parser chain: `parseAssignment → parseTernary → parseLogicalOr → parseLogicalAnd → parseEquality → parseComparison → parseBitwiseOr → parseBitwiseXor → parseBitwiseAnd → parseShift → parseTerm → parseFactor → parseExponent → parseUnary → parsePostfix → parsePrimary`
+
+Note: unlike C, equality (`==` `!=`) and comparison (`<` `>` …) bind **looser**
+than the bitwise operators — `a & b == c` parses as `a & (b == c)`.
 
 ## Precedence table
-| Level        | Operators                                                | Assoc | Parse fn          | AST node         |
-|--------------|----------------------------------------------------------|-------|-------------------|------------------|
-| 1 (lowest)   | `=` `+=` `-=` `*=` `/=` `%=` `&=` `\|=` `^=` `<<=` `>>=` | right | `parseAssignment` | `AssignmentExpr` |
-| 2            | `? :`                                                    | right | `parseTernary`    | `TernaryExpr`    |
-| 3            | `\|\|`                                                   | left  | `parseLogicalOr`  | `BinaryExpr`     |
-| 4            | `&&`                                                     | left  | `parseLogicalAnd` | `BinaryExpr`     |
-| 5            | `\|`                                                     | left  | `parseBitwiseOr`  | `BinaryExpr`     |
-| 6            | `^`                                                      | left  | `parseBitwiseXor` | `BinaryExpr`     |
-| 7            | `&`                                                      | left  | `parseBitwiseAnd` | `BinaryExpr`     |
-| 8            | `==` `!=`                                                | left  | `parseEquality`   | `BinaryExpr`     |
-| 9            | `<` `>` `<=` `>=`                                        | left  | `parseRelational` | `BinaryExpr`     |
-| 10           | `<<` `>>`                                                | left  | `parseShift`      | `BinaryExpr`     |
-| 11           | `+` `-`                                                  | left  | `parseAddSub`     | `BinaryExpr`     |
-| 12           | `*` `/` `%`                                              | left  | `parseMulDiv`     | `BinaryExpr`     |
-| 13           | unary `!` `-` `~` prefix `++` `--`                       | right | `parseUnary`      | `UnaryExpr`      |
-| 14 (highest) | postfix `++` `--` · call `()` · index `[]` · field `.`   | left  | `parsePostfix`    | various          |
-[FILL: verify all parse fn names against parser.ts]
+| Level        | Operators                                                               | Assoc | Parse fn          | AST node                                  |
+|--------------|-------------------------------------------------------------------------|-------|-------------------|-------------------------------------------|
+| 1 (lowest)   | `=` `+=` `-=` `*=` `/=` `%=` `**=` `&=` `\|=` `^=` `<<=` `>>=` `&&=` `\|\|=` | right | `parseAssignment` | `AssignmentNode`                          |
+| 2            | `? :`                                                                   | right | `parseTernary`    | `TernaryNode`                             |
+| 3            | `\|\|`                                                                  | left  | `parseLogicalOr`  | `BinaryNode`                              |
+| 4            | `&&`                                                                    | left  | `parseLogicalAnd` | `BinaryNode`                              |
+| 5            | `==` `!=`                                                               | left  | `parseEquality`   | `BinaryNode`                              |
+| 6            | `<` `>` `<=` `>=`                                                       | left  | `parseComparison` | `BinaryNode`                              |
+| 7            | `\|`                                                                    | left  | `parseBitwiseOr`  | `BitwiseNode`                             |
+| 8            | `^`                                                                     | left  | `parseBitwiseXor` | `BitwiseNode`                             |
+| 9            | `&`                                                                     | left  | `parseBitwiseAnd` | `BitwiseNode`                             |
+| 10           | `<<` `>>`                                                               | left  | `parseShift`      | `BitwiseNode`                             |
+| 11           | `+` `-`                                                                 | left  | `parseTerm`       | `MathNode`                                |
+| 12           | `*` `/` `%`                                                             | left  | `parseFactor`     | `MathNode`                                |
+| 13           | `**`                                                                    | left  | `parseExponent`   | `MathNode`                                |
+| 14           | unary `!` `-` `~` prefix `++` `--`                                      | right | `parseUnary`      | `UnaryNode`                               |
+| 15 (highest) | postfix `++` `--` · call `()` · index `[]` · field `.`                  | left  | `parsePostfix`    | `PostfixNode` / `CallNode` / `FieldAccessNode` |
 
 ## Operator semantics
-| Operator  | Notes                                   |
-|-----------|-----------------------------------------|
-| `/`       | all behavior is identical to C          |
-| `%`       | all behavior is identical to C          |
-| `<<` `>>` | all behavior is identical to C          |
-| `++` `--` | both prefix and postfix forms supported |
-[FILL: add any non-obvious behaviors]
+| Operator  | Notes                                                          |
+|-----------|----------------------------------------------------------------|
+| `/`       | all behavior is identical to C                                  |
+| `%`       | all behavior is identical to C                                  |
+| `<<` `>>` | all behavior is identical to C                                  |
+| `**`      | exponentiation; currently parses left-associative (`a**b**c` = `(a**b)**c`) |
+| `++` `--` | both prefix and postfix forms supported                        |
