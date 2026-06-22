@@ -1,11 +1,14 @@
 # Functions
-Status: **implemented** in parser (`parseFunction` → `FunctionNode`).
+Status: **implemented** in parser (`parseFunction` → `FunctionNode`). Type Argument Parsing missing, typeParameter working.
 
 ## Declaration syntax
 ```
-("fn" | "func" | "function") <ident> "(" [<param> {"," <param>}] ")" [":" <type>] <block>
-<param> ::= <ident> ":" <type>
+("fn" | "func" | "function") <ident> ["<" <typeParam> {"," <TypeParam>} ">"] "(" [<param> {"," <param>}] ")" [":" <type>] <block>
+<param> ::= <ident> ":" <type> ["=" <defaultValue>]
+<defaultValue
+<typeParam> ::= <type>
 ```
+
 `fn`, `func`, and `function` are interchangeable — all map to the same `Fn` TokenType with no semantic difference.
 
 Parameter and return types are parsed by `parseType()` into a `TypeNode` (see `lang/types.md`), so a trailing `[]` (e.g. `values: int[]`, `: int[]`) becomes a nested `Array` type node rather than a modifier flag. When the return type is omitted it defaults to `Void`. Parameters and the function body share one scope, so a parameter name may not collide with a top-level local in the body or with another parameter.
@@ -14,20 +17,21 @@ AST node: `FunctionNode` (`{id, modifiers, parameters, returnType, body}`), wher
 
 ## Call syntax (working now)
 ```
-<expr> "(" [<arg> {"," <arg>}] ")"
+<expr> ["<" <typeArg> {"," <TypeArg>} ">"] "(" [<arg> {"," <arg>}] ")"
 <arg> ::= <expr>
+<typeArg> ::= <type>
 ```
 Parsed in `parsePostfix`. AST node: `CallNode` (`{object, arguments}`).
 
 ## Planned features
-| Feature                | Status | Notes                 |
-|------------------------|--------|-----------------------|
-| Named parameters       | [FILL] |                       |
-| Default values         | [FILL] |                       |
-| Variadic (`...`)       | [FILL] |                       |
-| First-class / closures | Parsed (`LambdaNode`) | see `lang/lambdas.md` |
-| Overloading            | [FILL] |                       |
-| Generics               | Parsed | `fn name<T, U>(...)` — type params stored on `FunctionNode.typeParameters`; see `lang/generics.md` |
+| Feature                | Status                | Notes                                                                                              |
+|------------------------|-----------------------|----------------------------------------------------------------------------------------------------|
+| Named parameters       | [FILL]                |                                                                                                    |
+| Default values         | [FILL]                |                                                                                                    |
+| Variadic (`...`)       | [FILL]                |                                                                                                    |
+| First-class / closures | Parsed (`LambdaNode`) | see `lang/lambdas.md`                                                                              |
+| Overloading            | [FILL]                |                                                                                                    |
+| Generics               | Parsed                | `fn name<T, U>(...)` — type params stored on `FunctionNode.typeParameters`; see `lang/generics.md` |
 
 ## Calling convention
 [UNDEC: how arguments are passed — stack / registers / ABI target]
