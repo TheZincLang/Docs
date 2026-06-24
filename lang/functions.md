@@ -5,7 +5,7 @@ Status: **implemented** in parser (`parseFunction` → `FunctionNode`). Type Arg
 ```
 ("fn" | "func" | "function") <ident> ["<" <typeParam> {"," <TypeParam>} ">"] "(" [<param> {"," <param>}] ")" [":" <type>] <block>
 <param> ::= <ident> ":" <type> ["=" <defaultValue>]
-<defaultValue
+<defaultValue> ::= <constExpr>
 <typeParam> ::= <type>
 ```
 
