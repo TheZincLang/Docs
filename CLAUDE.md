@@ -20,6 +20,7 @@ Separate repo. Companion compiler repo: `../Zinc` (CLAUDE.md: `../Zinc/CLAUDE.md
 | Interfaces                                            | `lang/interfaces.md`   |
 | Mixins (header-style reuse), collision/provenance     | `lang/mixins.md`       |
 | Generics, type parameters, binding sites              | `lang/generics.md`     |
+| Concurrency — Mutex, Task, Promise, async fn          | `lang/concurrency.md`  |
 | `owns` / `serves` composition                         | `lang/owns-serves.md`  |
 | Groups (bulk clause targets)                          | `lang/groups.md`       |
 | Compiler error codes and messages                     | `compiler/errors.md`   |
