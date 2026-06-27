@@ -43,7 +43,7 @@ guard.val += 1
 A cold, lazy computation wrapping a zero-argument lambda. Constructing a `Task` does not start it; execution is controlled by which method you call.
 
 ```zn
-let t: Task<int> = Task(fn() {
+let t: Task<int> = Task(fn () => {
   heavyCompute()
 })
 // nothing is running yet

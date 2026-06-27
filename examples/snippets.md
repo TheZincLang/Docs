@@ -120,15 +120,16 @@ let first = [10, 20, 30][0]   // literal followed by index
 
 ## Lambdas / closures
 ```zn
-let inc = (x: int): int => {
+// a lambda is introduced by a function keyword: `fn`, `func`, or `function`
+let inc = fn (x: int): int => {
   return x + 1
 }
 
 // capture list: copy by default, `ref`/`borrow`/`move` to change mode, `*` wildcard
-let adder = [base, ref log](x: int): int => {
+let adder = fn [base, ref log](x: int): int => {
   return x + base
 }
-let sumAll = [ref *](a: int, b: int) => {
+let sumAll = fn [ref *](a: int, b: int) => {
   return a + b
 }
 ```

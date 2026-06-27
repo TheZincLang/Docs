@@ -5,11 +5,17 @@ A lambda is a callable value — a function expression that optionally captures 
 
 ## Syntax
 ```
-["[" [<capture> {"," <capture>}] "]"] "(" [<param> {"," <param>}] ")" [":" <return-type>] "=>" <block>
+<fn-kw> ["[" [<capture> {"," <capture>}] "]"] "(" [<param> {"," <param>}] ")" [":" <return-type>] "=>" <block>
+<fn-kw>    ::= "fn" | "func" | "function"
 <capture> ::= [<modifier>] <ident> | [<modifier>] "*"
 <modifier> ::= "copy" | "ref" | "borrow" | "bor" | "move"
 <param>    ::= <ident> ":" <type>
 ```
+
+A lambda must be introduced by a function keyword — `fn`, `func`, or `function`
+(the three spell the same token). The keyword makes a lambda unambiguous from a
+parenthesised expression or an array literal, so no lookahead is needed to
+recognise one.
 
 The capture list `[...]` is optional — omitting it is equivalent to no captures.
 The return type annotation `: <return-type>` is optional; when omitted the return
@@ -22,12 +28,12 @@ type defaults to `void` and is otherwise inferred by a later pass.
 
 ## Example
 ```zn
-let colorPixel: (color: string): void = [x, ref y](color: string) => {
+let colorPixel: (color: string): void = fn [x, ref y](color: string) => {
     setColor(x, y, color)
 }
 
 // with an explicit return type on the value:
-let add = (a: int, b: int): int => {
+let add = fn (a: int, b: int): int => {
     return a + b
 }
 ```
