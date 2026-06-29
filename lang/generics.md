@@ -83,6 +83,23 @@ There is **no second parameter axis** for ownership. A generic over `T` already 
 
 See `lang/memory.md` for the ownership operators themselves.
 
+## Dispatch strategy
+
+The compiler resolves a generic use by one of two strategies depending on what it
+can prove about the type argument at the use site:
+
+| Strategy            | Condition                               | Result                                                        |
+|---------------------|-----------------------------------------|---------------------------------------------------------------|
+| **Monomorphisation**| Type argument statically known          | Compiler emits a dedicated concrete version (C++ template–style) |
+| **Jump table**      | Type argument not statically known      | Compiler emits one generic version that dispatches at runtime via a vtable / jump table |
+
+The same `<T>` syntax covers both cases; the compiler chooses automatically. There
+is no annotation to force one strategy or the other.
+
+Because generics already cover the "type as parameter resolved statically" case via
+monomorphisation, Zinc has no separate comptime-parameter kind. See
+[`lang/comptime.md`](comptime.md) for how comptime and generics relate.
+
 ## Constraints (future)
 A type-qualifier **constraint** mechanism may be added later if generics must be bounded
 — e.g. restricting `T` to owned-only or ref-only types. This is a *constraint-level*
