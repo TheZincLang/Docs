@@ -5,6 +5,12 @@ statically typed programming language built from scratch. This is a separate
 repository from the compiler itself, which lives in the companion
 [Zinc](../Zinc) repo.
 
+> **Branch: `prerelease`.** This is the staging branch for documentation of
+> features that have graduated from the `experimental` branch but are not yet
+> stable enough to ship. Expect things here to be more baked than
+> `experimental`, but still subject to change before they land in a stable
+> release.
+
 The docs are filled in incrementally as the language and compiler take shape, so
 some sections are still templates (see [Conventions](#conventions) below).
 
@@ -21,32 +27,29 @@ lifetimes. See [`lang/overview.md`](lang/overview.md) for the full picture.
 
 ### Language (`lang/`)
 
-| Topic                                                 | File                                     |
-|-------------------------------------------------------|------------------------------------------|
-| Language overview, goals, paradigm, status            | [`lang/overview.md`](lang/overview.md)   |
-| Token types, literals, keywords, string templates     | [`lang/tokens.md`](lang/tokens.md)       |
-| Type system, `TypeKind` enum, rules                   | [`lang/types.md`](lang/types.md)         |
-| Operators, precedence table, semantics                | [`lang/operators.md`](lang/operators.md) |
+| Topic                                                 | File                                       |
+|-------------------------------------------------------|--------------------------------------------|
+| Language overview, goals, paradigm, status            | [`lang/overview.md`](lang/overview.md)     |
+| Token types, literals, keywords, string templates     | [`lang/tokens.md`](lang/tokens.md)         |
+| Type system, `TypeKind` enum, rules                   | [`lang/types.md`](lang/types.md)           |
+| Operators, precedence table, semantics                | [`lang/operators.md`](lang/operators.md)   |
 | Statement grammar (all statement forms)               | [`lang/statements.md`](lang/statements.md) |
-| Function declaration and call syntax                  | [`lang/functions.md`](lang/functions.md) |
-| Lambdas, closures, capture semantics                  | [`lang/lambdas.md`](lang/lambdas.md)     |
-| Memory model, ownership operators, lifetime inference | [`lang/memory.md`](lang/memory.md)       |
-| Import/export, module resolution                      | [`lang/modules.md`](lang/modules.md)     |
-| Enum syntax and AST representation                    | [`lang/enums.md`](lang/enums.md)         |
-| Struct syntax, members, and AST nodes                 | [`lang/structs.md`](lang/structs.md)     |
-| Class syntax, COOP inheritance, modifiers, AST nodes  | [`lang/classes.md`](lang/classes.md)     |
+| Function declaration and call syntax                  | [`lang/functions.md`](lang/functions.md)   |
+| Import/export, module resolution                      | [`lang/modules.md`](lang/modules.md)       |
+| Enum syntax and AST representation                    | [`lang/enums.md`](lang/enums.md)           |
+| Struct syntax, members, and AST nodes                 | [`lang/structs.md`](lang/structs.md)       |
 
 ### Compiler (`compiler/`)
 
-| Topic                                  | File                                         |
-|----------------------------------------|----------------------------------------------|
-| Pipeline stages and orchestration      | [`compiler/pipeline.md`](compiler/pipeline.md) |
-| Compiler error codes and messages      | [`compiler/errors.md`](compiler/errors.md)   |
+| Topic                             | File                                           |
+|-----------------------------------|------------------------------------------------|
+| Pipeline stages and orchestration | [`compiler/pipeline.md`](compiler/pipeline.md) |
+| Compiler error codes and messages | [`compiler/errors.md`](compiler/errors.md)     |
 
 ### Examples (`examples/`)
 
-| Topic                       | File                                           |
-|-----------------------------|------------------------------------------------|
+| Topic                         | File                                           |
+|-------------------------------|------------------------------------------------|
 | Annotated `.zn` code examples | [`examples/snippets.md`](examples/snippets.md) |
 
 ## Conventions
