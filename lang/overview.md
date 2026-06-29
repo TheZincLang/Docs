@@ -2,48 +2,54 @@
 
 | Field               | Value                                                                      |
 |---------------------|----------------------------------------------------------------------------|
-| Status              | earliest development                                                       |
+| Status              | v0 — minimal runnable subset under active development                      |
 | Source extension    | `.zn`                                                                      |
-| Paradigm            | compiled, statically typed, systems but full capabilities in all paradigms |
-| Compiler written in | TypeScript first since the similar syntax, then self hosted                |
-| Target              | first LLVM to x86/64, then custom backend way later with full target range |
-| Memory model        | guaranteed memory safety and automatic freeing, no GC                      |
+| Paradigm            | compiled, statically typed, systems                                        |
+| Compiler written in | TypeScript first, then self-hosted                                         |
+| Target              | LLVM to x86/64 first, custom backend later                                 |
+| Memory model        | TBD (v0 defers ownership/borrowing)                                        |
 
 ## Goals
-- **Safety**: prevent common bugs like null dereference, buffer overflow, use-after-free, data races, etc. through a combination of static checks and runtime checks.
-- **Performance**: generate efficient machine code with minimal overhead, comparable to C/C++.
-- **Expressiveness**: support a wide range of programming paradigms (procedural, object-oriented, functional, etc.) and provide powerful TypeScript-like high-level abstractions without sacrificing performance when using low-level code.
-- **Developer experience**: provide clear and helpful error messages, fast compilation times, and a smooth development workflow.
+- **Safety**: prevent common bugs through static checks and (later) runtime checks.
+- **Performance**: generate efficient machine code comparable to C/C++.
+- **Expressiveness**: support a range of programming paradigms without sacrificing performance.
+- **Developer experience**: clear error messages, fast compilation, smooth workflow.
 
-## Design philosophy
-Zinc does not force a trade-off between high-level and low-level code. The rule is: write in whatever style suits the problem, then drop to lower-level primitives only where it actually matters.
+## v0 Scope
 
-- In the hot path: use `move`/`borrow`/`ref`, manual memory control, raw types
-- Everywhere else: use TypeScript-like abstractions, first-class networking primitives, union types, closures — without importing anything special or paying a runtime penalty
+v0 is the minimal subset needed to get codegen running. Features not listed here are deferred.
 
-The memory model reflects this: a plain `=` is a copy and the ownership system is entirely opt-in. Most programs never need to think about it.
+### Supported
+| Feature                              | Notes                                        |
+|--------------------------------------|----------------------------------------------|
+| Primitives (`int`, `float`, `bool`, `string`, `char`) | See `lang/types.md`          |
+| `let` / `const`                      |                                              |
+| All basic operators                  | Arithmetic, bitwise, logical, comparison, assignment |
+| `if`/`else`, `while`, `for`, `loop`, `switch` | See `lang/statements.md`         |
+| Functions (positional args only)     | See `lang/functions.md`                      |
+| Structs (no field defaults)          | Fields + methods; see `lang/structs.md`      |
+| Enums (basic tagged values)          | See `lang/enums.md`                          |
+| Arrays (fixed or dynamic)            |                                              |
+| `import`/`export` (basic)            | See `lang/modules.md`                        |
 
-## Multi-paradigm capabilities
-| Capability                   | Notes                                                        |
-|------------------------------|--------------------------------------------------------------|
-| Procedural                   | core                                                         |
-| Object-oriented              | [FILL]                                                       |
-| Functional                   | lambdas, closures, first-class functions                     |
-| Networking                   | import-less, built-in primitives (TypeScript/Deno-style API) |
-| TypeScript-like abstractions | union types, type narrowing, string templates, etc.          |
-
-## Non-goals
-- **Garbage collection**: Zinc will not include a garbage collector; instead, it uses ownership and borrowing for memory safety without GC overhead.
-- **Scripting language features**: Zinc supports high-level abstractions and runtime dynamic features through lambdas and closures, but it is an AOT compiled language focused on performance and safety — not an interpreted or fully dynamic scripting language.
+### Deferred (not in v0)
+- Union types (`T | U`)
+- Lambdas / closures
+- Generics
+- Interfaces
+- Classes / inheritance
+- Memory operators (`move`/`borrow`/`ref`)
+- Mixins, `owns`/`serves`, groups
+- Concurrency primitives (`async`/`await`, Mutex, Task, Promise)
+- `throw`/`try`/`catch`
+- `new`/`typeof`/`sizeof`/`delete`
 
 ## Implementation status
-Sync with the compiler repo's `CLAUDE.md` § "Current implementation status".
 
 **Done:**
-- Lexer (complete or near-complete)
-- Parser: variable declarations (`let`/`const`), enums, structs, classes (with `extends`/`implements`/`owns`/`serves` clauses and member modifiers), interfaces (field + method signatures), groups (bulk clause targets), functions (`fn`/`func`/`function`), lambdas/closures, array literals, `loop`, `for` (C-style three-clause and `for`-in), all expression forms and operators, union types (`T | U`), generics (type-parameter declarations at binding sites + generic type arguments in annotations), `if`/`else`, `while`, `switch`, `break`/`continue`/`return`, `import` statements (named / wildcard / aliased / type-only)
+- Lexer (complete for v0 token set)
+- Parser: variable declarations (`let`/`const`), enums, structs (fields + methods), functions, array literals, `loop`, `for` (C-style three-clause and `for`-in), all expression forms and operators, `if`/`else`, `while`, `switch`, `break`/`continue`/`return`, `import` statements (named / wildcard / aliased / type-only)
 
 **Pending:**
-- Type checker (incl. interface conformance, group expansion, union narrowing, generic arity/constraints)
-- Lifetime inference
+- Type checker
 - Code generation (LLVM backend)

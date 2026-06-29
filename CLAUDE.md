@@ -10,21 +10,12 @@ Separate repo. Companion compiler repo: `../Zinc` (CLAUDE.md: `../Zinc/CLAUDE.md
 | Operators, precedence table, semantics                | `lang/operators.md`    |
 | Statement grammar (all statement forms)               | `lang/statements.md`   |
 | Function declaration and call syntax                  | `lang/functions.md`    |
-| Lambdas, closures, capture semantics                  | `lang/lambdas.md`      |
-| Memory model, ownership operators, lifetime inference | `lang/memory.md`       |
 | Import/export, module resolution                      | `lang/modules.md`      |
 | Enum syntax and AST representation                    | `lang/enums.md`        |
-| Struct syntax, members, and AST nodes                 | `lang/structs.md`      |
-| Class syntax, COOP inheritance, modifiers, AST nodes  | `lang/classes.md`      |
-| COOP paradigm overview (the OOP model)                | `lang/coop.md`         |
-| Interfaces                                            | `lang/interfaces.md`   |
-| Mixins (header-style reuse), collision/provenance     | `lang/mixins.md`       |
-| Generics, type parameters, binding sites              | `lang/generics.md`     |
-| Concurrency — Mutex, Task, Promise, async fn          | `lang/concurrency.md`  |
-| `owns` / `serves` composition                         | `lang/owns-serves.md`  |
-| Groups (bulk clause targets)                          | `lang/groups.md`       |
+| Struct syntax, fields, methods, and AST nodes         | `lang/structs.md`      |
 | Compiler error codes and messages                     | `compiler/errors.md`   |
 | Pipeline stages and orchestration                     | `compiler/pipeline.md` |
+| C transpiler — type map, mangling, status, pipeline   | `compiler/transpiler.md` |
 | Annotated .zn code examples                           | `examples/snippets.md` |
 
 ## Conventions
